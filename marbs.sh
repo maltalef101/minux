@@ -38,28 +38,6 @@ confirm() {
     fi
 }
 
-changeShell() {
-    username=$1
-    echo "What shell do you want to have? (default is bash,Ii don't use this and thus you will have the default bash files.)"
-    echo "1) bash (default)"
-    echo "2) zsh"
-    read -p "If you don't chose one, bash will be used. (1/2) " chosenshell
-    # applies shell
-    case $chosenShell in
-            1)
-                # useradd -m -g "wheel" -s /bin/bash "$username" >/dev/null 2>&1
-                echo "!! - Changed shell to bash."
-                ;;
-            2)
-                # useradd -m -g "wheel" -s /bin/zsh "$username" >/dev/null 2>&1
-                echo "!! - Changed shell to zsh."
-                ;;
-            *)
-                # useradd -m -g "wheel" -s /bin/bash "$username" >/dev/null 2>&1
-                echo "!! - Changed shell to bash."
-    esac
-}
-
 addUser() {
     read -p "First, please enter an username for your account: " username
     # checks for valid username
@@ -75,10 +53,7 @@ addUser() {
 
         if [ $existingUserConfirm = "y" -o $existingUserConfirm = "Y" -o $existingUserConfirm = "yes" -o $existingUserConfirm = "Yes" ]; then
             useradd -m -g "wheel" "$username" >/dev/null 2>&1
-            read -p "Do you wish to change the default shell? (y/n) " shellResponse
-            if [ $shellResponse = "y" -o $shellResponse = "Y" -o $shellResponse = "yes" -o $shellResponse = "Yes" ]; then
-                changeShell "$username"
-            fi
+            chsh -s /bin/zsh $username
             passwd "$username"
             echo "User with username '$username' modified."
         else
@@ -86,12 +61,15 @@ addUser() {
         fi
     else
         useradd -m -g "wheel" "$username" >/dev/null 2>&1
-        read -p "Do you wish to change the default shell? (y/n) " shellResponse
-        if [ $shellResponse = "y" -o $shellResponse = "Y" -o $shellResponse = "yes" -o $shellResponse = "Yes" ]; then
-            changeShell "$username"
-        fi
+        chsh -s /bin/zsh $username
         passwd "$username"
+        echo "User with username '$username' added."
     fi
+
+    mkdir /home/$username/downloads
+    mkdir /home/$username/documents
+    mkdir /home/$username/pictures
+    mkdir /home/$username/videos
 }
 
 refreshKeys() {
