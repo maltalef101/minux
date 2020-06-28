@@ -3,7 +3,7 @@
 # ((idea copied from luke smith (i really did steal a lot of fucking shit from him), but remade slightly different as a personal shell scripting project))
 
 # variables
-progs=./programs.csv
+progsfile="https://raw.githubusercontent.com/maltalef101/marbs/master/programs.csv"
 IFS="
 "
 dotfilesrepo="https://github.com/maltalef101/dotfiles.git"
@@ -92,6 +92,8 @@ manualinstall() { # Installs $1 manually if not installed. Used only for AUR hel
 installLoop() {
     echo "!! PACKAGES WILL NOW BE INSTALLED !!"
     echo "This will take some time. Make sure to sit back and relax."
+    curl -Ls "$progsfile" > /tmp/programs.csv
+    progs="/tmp/programs.csv"
     for i in $(cat $progs); do
         total=$(wc -l $progs)
         installed=0
