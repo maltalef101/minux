@@ -160,7 +160,7 @@ refreshKeys
 
 installLoop
 
-putGitRepo "$dotfilesrepo" "/home/$username" "$repobranch" "$repobranch"
+putGitRepo "$dotfilesrepo" "/home/$username" "$repobranch"
 rm -f "/home/$username/README.md"
 
 # Last message. Install complete!
