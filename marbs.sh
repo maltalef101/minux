@@ -104,7 +104,7 @@ installLoop() {
         packet=$(echo $i | awk -F "," '{print $2}' -)
 
        if [ "$tag" = "A" ]; then
-           yay -S --noconfirm $packet
+           sudo -u $username yay -S --noconfirm $packet
        else
            pacman -S --noconfirm --needed $packet
        fi
