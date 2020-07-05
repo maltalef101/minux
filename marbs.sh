@@ -10,6 +10,7 @@ dotfilesrepo="https://github.com/maltalef101/dotfiles.git"
 repobranch="master"
 
 # print the initial message with all the information:
+clear
 echo "<<     This script will install and configure the Arch Linux rice that I (maltalef101) have made.      >>"
 echo "<<      It's made for, and in the best case scenario, only for, a fresh Arch linux installation.       >>"
 echo "<<  If you only want my dotfiles, these are in my GitHub (https://github.com/maltalef101/dotfiles.git) >>"
