@@ -53,7 +53,6 @@ addUser() {
 
         if [ $existingUserConfirm = "y" -o $existingUserConfirm = "Y" -o $existingUserConfirm = "yes" -o $existingUserConfirm = "Yes" ]; then
             useradd -m -g "wheel" "$username" >/dev/null 2>&1
-            chsh -s /bin/zsh $username
             passwd "$username"
             echo "User with username '$username' modified."
         else
@@ -61,7 +60,6 @@ addUser() {
         fi
     else
         useradd -m -g "wheel" "$username" >/dev/null 2>&1
-        chsh -s /bin/zsh $username
         passwd "$username"
         echo "User with username '$username' added."
     fi
@@ -159,6 +157,8 @@ manualInstall yay
 refreshKeys
 
 installLoop
+
+chsh -s /bin/zsh "$username"
 
 putGitRepo "$dotfilesrepo" "/home/$username" "$repobranch"
 rm -f "/home/$username/README.md"
