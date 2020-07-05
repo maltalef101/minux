@@ -101,11 +101,11 @@ installLoop() {
         tag=$(echo $i | awk -F "," '{print $1}' -)
         packet=$(echo $i | awk -F "," '{print $2}' -)
 
-       if [ "$tag" = "A" ]; then
-           sudo -u $username yay -S --noconfirm $packet
-       else
-           pacman -S --noconfirm --needed $packet
-       fi
+        case $tag in
+             "A") sudo -u $username yay -S --noconfirm $packet
+             "G") gitMakeInstall $packet
+             *) pacman -S --noconfirm --needed $packet
+       esac
 
     done
 }
@@ -136,6 +136,8 @@ addUser
 grep "^Color" /etc/pacman.conf >/dev/null || sed -i "s/^#Color$/Color/" /etc/pacman.conf
 grep "ILoveCandy" /etc/pacman.conf >/dev/null || sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
 
+refreshKeys
+
 pacman -S --noconfirm --needed curl
 pacman -S --noconfirm --needed base-devel
 pacman -S --noconfirm --needed git
@@ -153,8 +155,6 @@ sed -i "s/^# %wheel ALL=(ALL) NOPASSWD: ALL$/%wheel ALL=(ALL) NOPASSWD: ALL/" /e
 chmod 0440 /etc/sudoers
 
 manualInstall yay
-
-refreshKeys
 
 installLoop
 
