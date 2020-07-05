@@ -102,9 +102,9 @@ installLoop() {
         packet=$(echo $i | awk -F "," '{print $2}' -)
 
         case $tag in
-             "A") sudo -u $username yay -S --noconfirm $packet
-             "G") gitMakeInstall $packet
-             *) pacman -S --noconfirm --needed $packet
+             "A") sudo -u $username yay -S --noconfirm $packet ;;
+             "G") gitMakeInstall $packet ;;
+             *) pacman -S --noconfirm --needed $packet ;;
        esac
 
     done
