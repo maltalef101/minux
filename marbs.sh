@@ -75,6 +75,25 @@ refreshKeys() {
     pacman --noconfirm -Sy archlinux-keyring >/dev/null 2&>1
 }
 
+gitMakeInstall() {
+    # TODO:
+    # - cd into src folder
+    # - clone the repo
+    # - cd into the repo
+    # - make and make install
+    # - cd into home
+    reponame=$(basename "$1" ".git")
+
+    mkdir -p /home/$username/.local/share/src/
+    cd /home/$username/.local/share/src/
+    git clone $reponame
+    cd $reponame
+    make
+    make install
+    cd $HOME
+
+}
+
 manualInstall() { # Installs $1 manually if not installed. Used only for AUR helper here.
 	[ -f "/usr/bin/$1" ] || (
 	echo "Installing yay, an AUR helper."
