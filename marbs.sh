@@ -86,7 +86,7 @@ gitMakeInstall() {
 
     mkdir -p /home/$username/.local/share/src/
     cd /home/$username/.local/share/src/
-    git clone $reponame
+    git clone $1
     cd $reponame
     make
     make install
