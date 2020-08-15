@@ -60,11 +60,6 @@ preInstallConfirm() {
 addUser() {
   useradd -m -g "wheel" -p "$pass1" "$username" >/dev/null 2&>1
   dialog --title "-- Minux instllation --" --infobox "User '$username' added!" 5 45
-
-  mkdir /home/$username/downloads
-  mkdir /home/$username/document >/dev/null 2>&1
-  mkdir /home/$username/pictures
-  mkdir /home/$username/videos
 }
 
 refreshKeys() {
@@ -109,7 +104,7 @@ installLoop() {
     pkgname=$(echo $i | awk -F "," '{print $2}' -)
     pkgdesc=$(echo $i | awk -F "," '{print $3}' - | tr '"' '\b')
 
-    dialog --title "-- Minux instllation --" --infobox "Installing '$pkgname'. $pkgname $pkgdesc\n\n$installed out of $total packages installed." 8 60
+    dialog --title "-- Minux instllation --" --infobox "Installing '$pkgname'. $pkgname  $pkgdesc\n\n$installed out of $total packages installed." 8 60
 
     case $tag in
       "A") aurInstall "$pkgname" ;;
@@ -204,6 +199,12 @@ echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
 # changes default shell to zsh because bash is doodoo.
 chsh -s /bin/zsh "$username" >/dev/null 2>&1
 sudo -u "$username" mkdir -p "/home/$username/.cache/zsh/"
+
+# add user directories
+mkdir /home/$username/downloads
+mkdir /home/$username/documents >/dev/null 2>&1
+mkdir /home/$username/pictures
+mkdir /home/$username/videos
 
 # dbus UUID is required for Artix installations with runit
 dbus-uuidgen > /var/lib/dbus/machine-id
