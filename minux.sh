@@ -58,8 +58,7 @@ preInstallConfirm() {
 }
 
 addUser() {
-  useradd -m -g "wheel" -p "$pass1" "$username" >/dev/null 2&>1
-  dialog --title "-- Minux instllation --" --infobox "User '$username' added!" 5 45
+  useradd -m -g "wheel" -p "$pass1" "$username" >/dev/null 2&>1 && dialog --title "-- Minux instllation --" --infobox "User '$username' added!" 5 45
 }
 
 refreshKeys() {
