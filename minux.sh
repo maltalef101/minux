@@ -49,7 +49,7 @@ getUserAndPass() {
 
 checkUser() {
   if [ "$(id -u $username 2>&1)" !=1 ]; then
-    dialog --title "-- Minux installation --" --yes-label "Yes, continue." --no-label "No! Go back" --yesno "User '$username' already exists, if you continue, your login credentials will be overwritten, as well as your config files if you then chose to continue with the installation.\n\nDo you wish to continue?" 10 60 || echo "User cancelled. Exiting clean."; exit 1
+    dialog --title "-- Minux installation --" --yes-label "Yes, continue." --no-label "No! Go back" --yesno "User '$username' already exists, if you continue, your login credentials will be overwritten, as well as your config files if you then chose to continue with the installation.\n\nDo you wish to continue?" 10 60
   fi
 }
 
