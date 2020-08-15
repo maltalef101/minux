@@ -110,7 +110,7 @@ installLoop() {
       "G") gitMakeInstall "$pkgname" ;;
       *) installPkg "$pkgname" ;;
     esac
-    installed=$installed+1
+    let "$installed=$installed+1"
   done
 }
 
