@@ -54,7 +54,10 @@ checkUser() {
 }
 
 preInstallConfirm() {
-  dialog --title "-- Minux installation --" --yes-label "Yes, continue." --no-label "No! Go back" --yesno "This is your last chance to back out.\n\nDo you wish to continue with the installation?" 10 60
+    dialog --title "-- Minux installation --" --yes-label "Yes, continue." --no-label "No! Go back" --yesno "This is your last chance to back out.\n\nDo you wish to continue with the installation?" 10 60
+    if [ "echo $?" != 1 ]; then
+        exit 1
+    fi
 }
 
 addUser() {
@@ -86,8 +89,8 @@ manualInstall() { # Installs $1 manually if not installed. Used only for AUR hel
 	curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
 	sudo -u "$username" tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
 	cd "$1" &&
-  sudo -u "$username" makepkg --noconfirm -si >/dev/null 2>&1
-  cd /tmp || return)
+    sudo -u "$username" makepkg --noconfirm -si >/dev/null 2>&1
+    cd /tmp || return)
 }
 
 installLoop() {
@@ -96,7 +99,7 @@ installLoop() {
   curl -Ls "$progsurl" > $progs
   rem=$(head -1 "$progs")
   total=$(wc -l "$progs")
-  installed=0
+  installed=1
 
   for i in $(grep -v "$rem" "$progs"); do
     tag=$(echo $i | awk -F "," '{print $1}' -)
@@ -110,7 +113,7 @@ installLoop() {
       "G") gitMakeInstall "$pkgname" ;;
       *) installPkg "$pkgname" ;;
     esac
-    let "$installed=$installed+1"
+    installed=$((installed+1))
   done
 }
 
@@ -141,7 +144,7 @@ getUserAndPass
 checkUser
 
 # prompts the user for confirmation on the installation. this is the user's last chance to back out.
-preInstallConfirm || exit 1
+preInstallConfirm
 
 # actually adds the entered username and password
 addUser "$username"
