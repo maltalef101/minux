@@ -100,10 +100,11 @@ installLoop() {
   dialog --title "-- Minux installation --" --infobox "Packages will now be installed!\n\nThis will take some time. Be sure to grab a drink, a book, sit back, and relax." 7 60
   progs="/tmp/progrsms.csv"
   curl -Ls "$progsurl" > $progs
+  rem=$(head -1 "$progs")
   total=$(wc -l "$progs")
   installed=0
 
-  for i in $(cat "$progs"); do
+  for i in $(grep -v "$rem" "$progs"); do
     tag=$(echo $i | awk -F "," '{print $1}' -)
     pkgname=$(echo $i | awk -F "," '{print $2}' -)
     pkgdesc=$(echo $i | awk -F "," '{print $3}' - | tr '"' '\b')
