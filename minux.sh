@@ -58,7 +58,7 @@ preInstallConfirm() {
 }
 
 addUser() {
-  useradd -m -g "wheel" -p "$pass1" "$username" >/dev/null 2&>1 && dialog --title "-- Minux instllation --" --infobox "User '$username' added!" 5 45
+  useradd -m -g "wheel" -p "$pass1" "$1" >/dev/null 2&>1 && dialog --title "-- Minux instllation --" --infobox "User '$1' added!" 5 45
 }
 
 refreshKeys() {
@@ -144,7 +144,7 @@ checkUser
 preInstallConfirm
 
 # actually adds the entered username and password
-addUser
+addUser "$username"
 
 # Make pacman and yay colorful and adds eye candy on the progress bar because why not.
 grep "^Color" /etc/pacman.conf >/dev/null || sed -i "s/^#Color$/Color/" /etc/pacman.conf
