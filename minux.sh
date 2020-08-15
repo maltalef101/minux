@@ -23,8 +23,8 @@ installPkg() { pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 aurInstall() { sudo -u $username yay --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 
 welcomeMsg() {
-  dialog --title "-- Minux instllation --" --msgbox "Welcome to Minux!\nThis script will install and configure the Arch Linux rice that I (maltalef101) have made.\n\nIt's made for, and in the best case scenario, only for, a fresh Arch Linux installation.\n\nIf you only want my dotfiles, they are in my GitHub (https://github.com/maltalef/dotfiles.git)" 12 65
-  dialog --color --title "!! IMPORTANT NOTE !!" --infobox "Make sure you have the latest version of pacman installed or the installation process of some packages will most certainly fail."
+  dialog --title "-- Minux instllation --" --msgbox "Welcome to Minux!\nThis script will install and configure the Arch Linux rice that I (maltalef101) have made.\n\nIt's made for, and in the best case scenario, only for, a fresh Arch Linux installation.\n\nIf you only want my dotfiles, they are in my GitHub (https://github.com/maltalef/dotfiles.git)" 14 65
+  dialog --color --title "!! IMPORTANT NOTE !!" --infobox "Make sure you have the latest version of pacman installed or the installation process of some packages will most certainly fail." 7 65
 }
 
 getUserAndPass() {
@@ -54,7 +54,7 @@ checkUser() {
 }
 
 preInstallconfirm() {
-  dialog --title "-- Minux installation --" --yes-label "Yes, continue." --no-label "No! Go back" --yesno "This is your last chance to back out.\n\nDo you wish to continue with the installation?" 10 60 || echo "User cancelled. Exiting clean."; exit 1
+  dialog --title "-- Minux installation --" --yes-label "Yes, continue." --no-label "No! Go back" --yesno "This is your last chance to back out.\n\nDo you wish to continue with the installation?" 10 60
 }
 
 addUser() {
@@ -147,7 +147,7 @@ getUserAndPass
 checkUser
 
 # prompts the user for confirmation on the installation. this is the user's last chance to back out.
-preInstallconfirm
+preInstallconfirm || exit 1
 
 # actually adds the entered username and password
 addUser
