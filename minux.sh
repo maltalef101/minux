@@ -54,7 +54,7 @@ checkUser() {
 }
 
 preInstallConfirm() {
-  dialog --title "-- Minux installation --" --yes-label "Yes, continue." --no-label "No! Go back" --yesno "This is your last chance to back out.\n\nDo you wish to continue with the installation?" 10 60
+  dialog --title "-- Minux installation --" --yes-label "Yes, continue." --no-label "No! Go back" --yesno "This is your last chance to back out.\n\nDo you wish to continue with the installation?" 10 60 || exit 1
 }
 
 addUser() {
