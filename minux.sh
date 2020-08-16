@@ -1,6 +1,7 @@
 #! /bin/sh
 # maltalef101's auto rice bootstrapping scripts (Minux)
 # ((idea copied from luke smith (i really did steal a lot of fucking shit from him), but remade slightly different as a personal shell scripting project))
+# Licence: MIT
 
 # variables
 progsurl="https://raw.githubusercontent.com/maltalef101/minux/master/programs.csv"
