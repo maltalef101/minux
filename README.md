@@ -2,7 +2,10 @@
 ## Installation
 
 Being on an Arch and Pacman based distribution as root, execute the following commands:
-`curl -LO https://raw.githubusercontent.com/maltalef101/marbs/master/minux.sh sh minux.sh`
+
+`curl -LO https://raw.githubusercontent.com/maltalef101/marbs/master/minux.sh
+sh minux.sh`
+
 Simple as that.
 
 ## What is Minux?
