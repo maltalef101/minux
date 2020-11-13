@@ -62,7 +62,13 @@ preInstallConfirm() {
 }
 
 addUser() {
-  useradd -m -g "wheel" -p "$pass1" "$1" >/dev/null 2&>1 && dialog --title "-- Minux instllation --" --infobox "User '$1' added!" 5 45
+# Adds user `$name` with password $pass1.
+	dialog --infobox "Adding user \"$name\"..." 4 50
+	useradd -m -g wheel -s /bin/zsh "$username" >/dev/null 2>&1 ||
+	usermod -a -G wheel "$username" && mkdir -p /home/"$username" && chown "$name":wheel /home/"$username"
+	repodir="/home/$username/.local/src"; mkdir -p "$repodir"; chown -R "$username":wheel "$(dirname "$repodir")"
+	echo "$username:$pass1" | chpasswd
+	unset pass1 pass2
 }
 
 refreshKeys() {
