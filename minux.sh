@@ -63,9 +63,9 @@ preInstallConfirm() {
 
 addUser() {
 # Adds user `$name` with password $pass1.
-	dialog --infobox "Adding user \"$name\"..." 4 50
+	dialog --infobox "Adding user \"$username\"..." 4 50
 	useradd -m -g wheel -s /bin/zsh "$username" >/dev/null 2>&1 ||
-	usermod -a -G wheel "$username" && mkdir -p /home/"$username" && chown "$name":wheel /home/"$username"
+	usermod -a -G wheel "$username" && mkdir -p /home/"$username" && chown "$username":wheel /home/"$username"
 	repodir="/home/$username/.local/src"; mkdir -p "$repodir"; chown -R "$username":wheel "$(dirname "$repodir")"
 	echo "$username:$pass1" | chpasswd
 	unset pass1 pass2
