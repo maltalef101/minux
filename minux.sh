@@ -80,8 +80,8 @@ gitMakeInstall() {
   progname=$(basename "$1" ".git")
   dir="$repdir/$progname"
 
-  mkdir -p /home/$username/.local/share/src/
-  cd /home/$username/.local/share/src/
+  mkdir -p /home/$username/.local/src/
+  cd /home/$username/.local/src/
   git clone $1
   cd $reponame
   make
