@@ -64,7 +64,7 @@ preInstallConfirm() {
 addUser() {
 # Adds user `$name` with password $pass1.
 	dialog --infobox "Adding user \"$username\"..." 4 50
-	useradd -m -g wheel -s /bin/zsh "$username" >/dev/null 2>&1 ||
+	useradd -m -g wheel "$username" >/dev/null 2>&1 ||
 	usermod -a -G wheel "$username" && mkdir -p /home/"$username" && chown "$username":wheel /home/"$username"
 	repodir="/home/$username/.local/src"; mkdir -p "$repodir"; chown -R "$username":wheel "$(dirname "$repodir")"
 	echo "$username:$pass1" | chpasswd
@@ -77,7 +77,8 @@ refreshKeys() {
 }
 
 gitMakeInstall() {
-  reponame=$(basename "$1" ".git")
+  progname=$(basename "$1" ".git")
+  dir="$repdir/$progname"
 
   mkdir -p /home/$username/.local/share/src/
   cd /home/$username/.local/share/src/
@@ -154,7 +155,7 @@ checkUser
 preInstallConfirm
 
 # actually adds the entered username and password
-addUser "$username"
+addUser
 
 # Make pacman and yay colorful and adds eye candy on the progress bar because why not.
 grep "^Color" /etc/pacman.conf >/dev/null || sed -i "s/^#Color$/Color/" /etc/pacman.conf
