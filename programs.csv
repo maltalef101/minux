@@ -7,6 +7,7 @@ TAG,URL/PKG NAME,DESCRIPTION
 ,xorg-apps,"is an utility package for the X.org system."
 ,xdg-user-dirs,"is for setting the XDG user dirs."
 ,openssh,"is used for sshing to other computers."
+,rsync,"is the best file-transfering utility."
 ,arch-wiki-docs,"has the full Arch Wiki for offline viewing."
 A,xtitle,"is used for outputting window titles to stdout."
 A,xkb-switch,"is used for reading out and switching keyboard layouts OTF"
