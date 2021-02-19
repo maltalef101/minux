@@ -3,7 +3,7 @@
 
 Being on an Arch and Pacman based distribution as root, execute the following commands:
 
-`curl -LO https://raw.githubusercontent.com/maltalef101/marbs/master/minux.sh
+`curl -LO https://raw.githubusercontent.com/maltalef101/minux/master/minux.sh
 sh minux.sh`
 
 Simple as that.
@@ -32,6 +32,6 @@ The script is divided in very modular small bits of code that do one thing. Thus
 All of the hard work is done by the `installLoop` function, that cycles through the programs files and decides, based on the tag of each program, which commands to exectue to install it. It's a simple case statement, you can easily add new installation methods.
 
 Take note that programs from the AUR can **only** be installed by a non-root user. What Minux does to bypass this is to habilitate the new user to run commands as `sudo` without a password, such as the user won't be prompted for a password many many times during the installation.
-I actually prefer, absolutely taking into considerations the security risks, running `sudo` without a password. You can change this editing the `/etc/sudoers` file.
+I actually prefer, absolutely taking into considerations the security risks, running `sudo` without a password. You can change this editing the `/etc/sudoers` file via `visudo`.
 #### Contact
 Email: maltalef101@gmail.com
