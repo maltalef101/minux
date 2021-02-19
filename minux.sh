@@ -22,6 +22,7 @@ pacman --noconfirm --needed -S "dialog" >/dev/null 2>&1
 
 installPkg() { pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 aurInstall() { sudo -u $username yay --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
+pipInstall() { sudo pip install "$1" >/dev/null 2>&1 ;}
 
 welcomeMsg() {
   dialog --title "-- Minux instllation --" --msgbox "Welcome to Minux!\nThis script will install and configure the Arch Linux rice that I (maltalef101) have made.\n\nIt's made for, and in the best case scenario, only for, a fresh Arch Linux installation.\n\nIf you only want my dotfiles, they are in my GitHub (https://github.com/maltalef/dotfiles.git)" 14 65
@@ -56,9 +57,7 @@ checkUser() {
 
 preInstallConfirm() {
     dialog --title "-- Minux installation --" --yes-label "Yes, continue." --no-label "No! Go back" --yesno "This is your last chance to back out.\n\nDo you wish to continue with the installation?" 10 60
-    if [ "echo $?" == 1 ]; then
-        exit 1
-    fi
+	[ "$(echo $?)" -eq 1 ] exit 1
 }
 
 addUser() {
@@ -72,18 +71,21 @@ addUser() {
 }
 
 refreshKeys() {
-  echo "Refreshing Arch Keyring..."
-  pacman --noconfirm -Sy archlinux-keyring >/dev/null 2&>1
+	echo "Refreshing keyring..."
+	case "$(readlink -f /sbin/init)" in
+	  *systemd*) pacman --noconfirm -Sy archlinux-keyring >/dev/null 2&>1 ;;
+	  *openrc*) pacman --noconfirm -Sy artixlinux-keyring >/dev/null 2&>1 ;;
+	esac
 }
 
 gitMakeInstall() {
   progname=$(basename "$1" ".git")
   dir="$repdir/$progname"
 
-  mkdir -p /home/$username/.local/src/
+  mkdir -p /home/$username/.local/share/src/
   cd /home/$username/.local/src/
   git clone $1
-  cd $reponame
+  cd $dir
   make
   make install
   cd $HOME
@@ -119,6 +121,7 @@ installLoop() {
     case $tag in
       "A") aurInstall "$pkgname" ;;
       "G") gitMakeInstall "$pkgname" ;;
+	  "P") pipInstall "$pkgname" ;;
       *) installPkg "$pkgname" ;;
     esac
     installed=$((installed+1))
@@ -133,6 +136,18 @@ putGitRepo() { # Downloads a gitrepo $1 and places the files in $2 only overwrit
 	chown -R "$username":wheel "$dir" "$2"
 	sudo -u "$username" git clone --recursive -b "$branch" --depth 1 "$1" "$dir" >/dev/null 2>&1
 	sudo -u "$username" cp -rfT "$dir" "$2"
+}
+
+disableMouseAccel () {
+	dialog --title "-- Minux installation --" --infobox "Disabling mouse acceleration" 5 60
+	mkdir -p /etc/X11/xorg.conf.d/
+	echo "Section "InputClass"
+	Identifier "My Mouse"
+	Driver "libinput"
+	MatchIsPointer "yes"
+	Option "AccelProfile" "flat"
+	Option "AccelSpeed" "0"
+EndSection" > /etc/X11/xorg.conf.d/50-mouse-acceleration.conf
 }
 
 finalize() {
@@ -206,15 +221,22 @@ dialog --infobox "beeping sucks ass.\nremoving module" 5 50
 rmmod pcspkr
 echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
 
+# disable mouse acceleration (or actually, enable a flat profile for it, but technicisms, man)
+disableMouseAccel
+
 # changes default shell to zsh because bash is doodoo.
 chsh -s /bin/zsh "$username" >/dev/null 2>&1
 sudo -u "$username" mkdir -p "/home/$username/.cache/zsh/"
 
 # add user directories
 mkdir /home/$username/downloads
-mkdir /home/$username/documents >/dev/null 2>&1
+mkdir /home/$username/documents
 mkdir /home/$username/pictures
 mkdir /home/$username/videos
+mkdir /home/$username/public
+mkdir /home/$username/music
+mkdir /home/$username/templates
+mkdir /home/$username/Desktop
 
 # dbus UUID is required for Artix installations with runit
 dbus-uuidgen > /var/lib/dbus/machine-id
