@@ -21,7 +21,7 @@ pacman --noconfirm --needed -S "dialog" >/dev/null 2>&1
 # !!! FUNCTIONS !!!
 
 installPkg() { pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
-aurInstall() { sudo -u $username yay --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
+aurInstall() { sudo -u $username paru --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 pipInstall() { sudo pip install "$1" >/dev/null 2>&1 ;}
 
 welcomeMsg() {
@@ -138,6 +138,13 @@ putGitRepo() { # Downloads a gitrepo $1 and places the files in $2 only overwrit
 	sudo -u "$username" cp -rfT "$dir" "$2"
 }
 
+installNvimNightly () {
+	dialog --title " -- Minux installation --" --infobox "Installing the latest version of neovim." 5 60
+	nvim_url="https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage"
+	curl -LO $nvim_url
+	chmod +x "nvim.appimage"; mv nvim.appimage /usr/local/bin/nvim
+}
+
 disableMouseAccel () {
 	dialog --title "-- Minux installation --" --infobox "Disabling mouse acceleration" 5 60
 	mkdir -p /etc/X11/xorg.conf.d/
@@ -195,14 +202,17 @@ chmod 640 /etc/sudoers
 sed -i "s/^# %wheel ALL=(ALL) NOPASSWD: ALL$/%wheel ALL=(ALL) NOPASSWD: ALL/" /etc/sudoers
 chmod 0440 /etc/sudoers
 
-# installs yay manually, 'makepkg -si' style
-manualInstall yay
+# installs paru manually, 'makepkg -si' style
+manualInstall paru 
 
 # THIS IS THE FUNCTION CALL THAT ACTUALLY INSTALLS ALL
 # OF THE PACKAGES IN THE .csv
 # IF YOU WANT TO CHANGE SOMETHING ABOUT THIS, THE
 # FUNCTION IS DEFINED ABOVE.
 installLoop
+
+# Installs the latest development version of neovim
+installNvimNightly
 
 # use all cores for compilation, this could make a difference on large programs but idk
 sed -i "s/-j2/-j$(nproc)/:s/^#MAKEFLAGS/MAKEFLAGS" /etc/makepkg.conf
